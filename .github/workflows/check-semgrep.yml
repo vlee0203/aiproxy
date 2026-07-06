@@ -2,24 +2,7 @@
 name: Check-Semgrep
 
 on:
-  workflow_call:
   workflow_dispatch:
-  schedule:
-    - cron: 0 0 * * *
-  push:
-    branches:
-      - "**"
-    tags:
-      - "v*.*.*"
-    paths-ignore:
-      - "**/*.md"
-      - "**/*.yaml"
-  pull_request:
-    branches:
-      - "**"
-    paths-ignore:
-      - "**/*.md"
-      - "**/*.yaml"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
