@@ -15,6 +15,7 @@ on:
     paths-ignore:
       - "**/*.md"
       - "**/*.yaml"
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -29,6 +30,7 @@ env:
 jobs:
   release-web:
     name: Release Web
+    if: false  # not needed: Dockerfile builds frontend in multi-stage build
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
@@ -52,6 +54,7 @@ jobs:
 
   release:
     name: Release AI Proxy
+    if: false  # not needed: builds binaries + GitHub Release assets; we only need the docker image
     runs-on: ubuntu-24.04
     needs: release-web
     permissions:
@@ -295,7 +298,7 @@ jobs:
       packages: write
     needs: release-docker-images
     runs-on: ubuntu-24.04
-    if: ${{ github.event_name != 'pull_request' && github.actor != 'dependabot[bot]' }}
+    if: false  # not needed: sealos cluster image; we deploy via helm (sealos-cloud-aiproxy)
     steps:
       - name: Checkout
         uses: actions/checkout@v6
